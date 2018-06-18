@@ -7,6 +7,9 @@
 //
 
 import Foundation
+import Firebase
+
+let db = Firestore.firestore()
 
 struct School {
     //Identification Properties
@@ -26,6 +29,12 @@ struct School {
     var Staff : [Faculty]?
     let MaxStudentCourseLoad : Int?
     
+    //Functions
+    func getSchools() -> [School] {
+        let schoolsRef = db.collection("schools")
+        
+    }
+    
     //Initializer
     init(displayName : String , id: String, type : SchoolType , streetAddress : String , city : String , zipCode : Int , state : String , MaxStudentCourseLoad : Int?) {
         self.displayName = displayName
@@ -40,6 +49,39 @@ struct School {
         } else {
             self.MaxStudentCourseLoad = nil
         }
+    }
+    
+    init(data: [String : Any]) throws {
+        guard let displayName = data["displayName"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("displayName")
+        }
+        guard let id = data["id"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("id")
+        }
+        guard let typeStr = data["type"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("type")
+        }
+        guard let type : SchoolType = SchoolType(s: typeStr) else {
+            throw stringToTypeError.invalidString(typeStr)
+        }
+        guard let streetAddress = data["streetAddress"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("streetAddress")
+        }
+        guard let city = data["city"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("city")
+        }
+        guard let zipCode = data["zipCode"] as? Int else {
+            throw firebaseInterpretationError.invalidKeys("zipCode")
+        }
+        guard let state = data["state"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("state")
+        }
+        guard let maxStudentCourseLoad = data["maxStudentCourseLoad"] as? Int else {
+            throw firebaseInterpretationError.invalidKeys("maxStudentCourseLoad")
+        }
+        
+        self.init(displayName: displayName, id: id, type: type, streetAddress: streetAddress, city: city, zipCode: zipCode, state: state, MaxStudentCourseLoad: maxStudentCourseLoad)
+        
     }
 }
 
@@ -117,7 +159,7 @@ struct Account {
     let lastName : String
     var username : String
     var phoneNumber : Int
-    var school : School
+    var school : School?
     
     //Preferences
     var blockedUsers : [Account]?
