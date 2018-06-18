@@ -1,0 +1,6 @@
+framework module Pods_ScholarliTests {
+  umbrella header "Pods-ScholarliTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
