@@ -9,15 +9,15 @@
 import Foundation
 
 
-enum PrivacyPolicies {
-    case totalPrivacy , classMates
+enum PrivacyPolicies : Int {
+    case totalPrivacy = 1 , classMates = 2
 }
 
 enum AssignmentType {
     case homework, lab, study, quiz, test, reminder, essay, project
 }
 
-enum AccountType : String{
+enum AccountType : String {
     case student = "Student"
     case teacher = "Teacher"
     case parent = "Parent"
@@ -47,21 +47,21 @@ enum AccountType : String{
     }
 }
 
-enum Title {
-    case Mr
-    case Mrs
-    case Ms
-    case Dr
-    case Sr
-    case Sra
-    case Srta
-    case Prf
+enum Title : Int{
+    case Mr = 1
+    case Mrs = 2
+    case Ms = 3
+    case Dr = 4
+    case Sr = 5
+    case Sra = 6
+    case Srta = 7
+    case Prf = 8
 }
 
-enum SchoolType {
-    case Public
-    case Private
-    case Trade
+enum SchoolType : Int {
+    case Public = 1
+    case Private = 2
+    case Trade = 3
     
     init?(s: String) {
         switch s {

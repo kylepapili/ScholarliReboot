@@ -11,6 +11,7 @@ import Foundation
 enum firebaseInterpretationError : Error {
     case invalidKeys(String)
     case invalidValue(String)
+    case queryFailed
 }
 
 enum stringToTypeError : Error {

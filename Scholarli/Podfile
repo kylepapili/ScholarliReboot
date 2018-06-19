@@ -7,18 +7,21 @@ target 'Scholarli' do
 
   # Pods for Scholarli
 	pod 'Firebase/Core'
+	pod 'Firebase/Firestore'
 
 
   target 'ScholarliTests' do
     inherit! :search_paths
     # Pods for testing
 	pod 'Firebase/Core'
+	pod 'Firebase/Firestore'
   end
 
   target 'ScholarliUITests' do
     inherit! :search_paths
     # Pods for testing
 	pod 'Firebase/Core'
+	pod 'Firebase/Firestore'
   end
 
 end

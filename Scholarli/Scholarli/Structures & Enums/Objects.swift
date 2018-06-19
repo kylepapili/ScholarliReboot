@@ -29,13 +29,88 @@ struct School {
     var Staff : [Faculty]?
     let MaxStudentCourseLoad : Int?
     
-    //Functions
-    func getSchools() -> [School] {
-        let schoolsRef = db.collection("schools")
+    var data : [String : Any] {
+        var tempDict : [String : Any] = ["displayName" : self.displayName,
+                                         "id" : self.id,
+                                         "type" : self.type.rawValue,
+                                         "streetAddress" : self.streetAddress,
+                                         "city" : self.city,
+                                         "zipCode" : self.zipCode,
+                                         "state" : self.state]
         
+        if let courses = self.CourseList {
+            var tinyArray : [[String : Any]] = [[:]]
+            for course in courses {
+                tinyArray.append(course.data)
+            }
+            tempDict["courseList"] = tinyArray
+        }
+        
+        if let staff = self.Staff {
+            var tinyArray : [[String : Any]] = [[:]]
+            for person in staff {
+                tinyArray.append(person.data)
+            }
+            tempDict["staff"] = tinyArray
+        }
+        if let maxstdcrsld = self.MaxStudentCourseLoad {
+            tempDict["maxStudentCourseLoad"] = maxstdcrsld
+        }
+        
+        return tempDict
     }
     
-    //Initializer
+    //Functions
+    func getSchools(completion: @escaping ([School]) -> Void) {
+        schoolQuery { (dataArray) in
+            var schoolArray : [School] = []
+            for data in dataArray {
+                if let tempSchool = try? School(data: data) {
+                    schoolArray.append(tempSchool)
+                }
+            }
+            completion(schoolArray)
+        }
+    }
+    
+    func schoolQuery(completion: @escaping ([[String : Any]]) -> Void) {
+        let schoolsRef = db.collection("schools")
+        schoolsRef.getDocuments { (querySnapshot, err) in
+            if let err = err {
+                //Error
+                print("error: \(err)")
+            } else {
+                var returnValue : [[String : Any]] = [[:]]
+                for document in (querySnapshot?.documents)! {
+                    returnValue.append(document.data())
+                }
+                completion(returnValue)
+            }
+        }
+    }
+    
+    //Initializers
+    
+    //With DB Integration
+    init(ref : CollectionReference, displayName : String , type : SchoolType , streetAddress : String , city : String , zipCode : Int , state : String , MaxStudentCourseLoad : Int?) {
+        self.displayName = displayName
+        self.type = type
+        self.streetAddress = streetAddress
+        self.city = city
+        self.zipCode = zipCode
+        self.state = state
+        if let unwrapped = MaxStudentCourseLoad {
+            self.MaxStudentCourseLoad = unwrapped
+        } else {
+            self.MaxStudentCourseLoad = nil
+        }
+        let docRef : DocumentReference = ref.document()
+        self.id = docRef.documentID
+        
+        docRef.setData(self.data)
+    }
+    
+    //Without DB Integration
     init(displayName : String , id: String, type : SchoolType , streetAddress : String , city : String , zipCode : Int , state : String , MaxStudentCourseLoad : Int?) {
         self.displayName = displayName
         self.id = id
@@ -92,10 +167,37 @@ struct Course {
     let teacher : Faculty
     let school : School
     let period : Int
-    let classroom : Int?
+    let classroom : String?
     
-    //Initializer
-    init(displayName : String , id: String, teacher: Faculty, school: School, period: Int, classroom: Int?) {
+    var data : [String : Any] {
+        var tempDict : [String : Any] = [:]
+        tempDict = ["displayName" : self.displayName, "id" : self.id, "teacher" : self.teacher.data, "school" : self.school.data, "period" : self.period]
+        if let classroom = self.classroom {
+            tempDict["classroom"] = classroom
+        }
+        return tempDict
+    }
+    
+    //Initializers
+    //without ID Specified
+    init(ref: CollectionReference, displayname : String , teacher: Faculty, school: School, period: Int, classroom: String?) {
+        self.displayName = displayname
+        self.teacher = teacher
+        self.school = school
+        self.period = period
+        if let unwrapped = classroom {
+            self.classroom = unwrapped
+        } else {
+            self.classroom = nil
+        }
+        let docRef : DocumentReference = ref.document()
+        self.id = docRef.documentID
+        
+        docRef.setData(self.data)
+    }
+    
+    //With ID specified
+    init(displayName : String , id: String, teacher: Faculty, school: School, period: Int, classroom: String?) {
         self.displayName = displayName
         self.id = id
         self.teacher = teacher
@@ -112,6 +214,7 @@ struct Course {
 struct Faculty {
     let account : Account?
     //Identification Properties
+    let id : String
     let lastName : String
     let firstName : String?
     let title : Title
@@ -120,8 +223,25 @@ struct Faculty {
     }
     var schedule : Schedule?
     
+    var data : [String : Any] {
+        var tempDict : [String : Any] = ["id" : self.id ,
+         "lastName" : self.lastName,
+         "title" : self.title.rawValue]
+        if let acct = self.account {
+            tempDict["account"] = acct.data
+        }
+        if let firstN = self.firstName {
+            tempDict["firstName"] = firstN
+        }
+        if let sched = self.schedule {
+            tempDict["schedule"] = sched.data
+        }
+        return tempDict
+    }
+    
     //Initializer
-    init(account : Account?, lastName : String , firstName : String? , title : Title , schedule : Schedule?) {
+    //With database integration
+    init(ref : CollectionReference, lastName : String , firstName : String? , title : Title , schedule : Schedule?, account: Account?) {
         if let account = account {
             self.account = account
         } else {
@@ -139,16 +259,68 @@ struct Faculty {
         } else {
             self.schedule = nil
         }
+        let docRef : DocumentReference = ref.document()
+        self.id = docRef.documentID
+        
+        docRef.setData(self.data)
+    }
+    
+    //Without database integration
+    init(account : Account?, lastName : String , firstName : String? , title : Title , schedule : Schedule?, id : String) {
+        if let account = account {
+            self.account = account
+        } else {
+            self.account = nil
+        }
+        self.lastName = lastName
+        if let firstName = firstName {
+            self.firstName = firstName
+        } else {
+            self.firstName = nil
+        }
+        self.title = title
+        if let sched = schedule {
+            self.schedule = sched
+        } else {
+            self.schedule = nil
+        }
+        self.id = id
     }
 }
 
 struct Schedule {
     let maxCourseCount : Int
-    let CourseLoad : [Int : Course?]
+    let courseLoad : [Course]?
+    let id : String
+    var data : [String : Any] {
+        var tempDict : [String : Any] = ["maxCourseCount" : self.maxCourseCount]
+        
+        if let crsLd = self.courseLoad {
+            var tinyArray : [[String : Any]] = [[:]]
+            for crs in crsLd {
+                tinyArray.append(crs.data)
+            }
+            tempDict["courseLoad"] = tinyArray
+            
+        }
+        return tempDict
+    }
+    //Initializers
     
-    init(maxCourseCount : Int , CourseLoad : [Int : Course?]) {
+    //With DB Integration
+    init(ref: CollectionReference, maxCourseCount : Int , courseLoad : [Course]?) {
         self.maxCourseCount = maxCourseCount
-        self.CourseLoad = CourseLoad
+        self.courseLoad = courseLoad
+        let docRef : DocumentReference = ref.document()
+        self.id = docRef.documentID
+        
+        docRef.setData(self.data)
+    }
+    //Without DB Integration
+    init(maxCourseCount : Int , courseLoad : [Course]?, id : String) {
+        self.maxCourseCount = maxCourseCount
+        self.courseLoad = courseLoad
+        self.id = id
     }
 }
 
@@ -171,7 +343,62 @@ struct Account {
     var blockedBy : [Account]?
     var KarmaLevel : Int = 0
     
-    //Initializer
+    var data : [String : Any] {
+        var tempDict : [String : Any] = ["id" : self.id,
+                                         "firstName" : self.firstName,
+                                         "lastName" : self.lastName,
+                                         "username" : self.username,
+                                         "phoneNumber" : self.phoneNumber,
+                                         "notificationReady" : self.notificationReady,
+                                         "type" : self.type.rawValue,
+                                         "karmaLevel" : self.KarmaLevel]
+        if let school = self.school {
+            tempDict["school"] = school.data
+        }
+        if let blockedUsers = self.blockedUsers {
+            var tinyArray : [[String : Any]] = [[:]]
+            for user in blockedUsers {
+                tinyArray.append(user.data)
+            }
+            tempDict["blockedUsers"] = tinyArray
+        }
+        if let pushToken = self.pushToken {
+            tempDict["pushToken"] = pushToken
+        }
+        if let blockedBy = self.blockedBy {
+            var tinyArray : [[String : Any]] = [[:]]
+            for user in blockedBy {
+                tinyArray.append(user.data)
+            }
+            tempDict["blockedBy"] = tinyArray
+        }
+        
+        return tempDict
+    }
+    
+    //Initializers
+    
+    //With DB Integration
+    init(ref: CollectionReference, firstName : String , lastName : String , username : String , phoneNumber : Int, school : School , blockedUsers : [Account]? , pushToken : String? , notificationReady : Bool , type : AccountType , blockedBy : [Account]?) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.username = username
+        self.phoneNumber = phoneNumber
+        self.school = school
+        self.blockedUsers = blockedUsers
+        self.pushToken = pushToken
+        self.notificationReady = notificationReady
+        self.type = type
+        self.blockedBy = blockedBy
+        self.KarmaLevel = 0
+        
+        let docRef : DocumentReference = ref.document()
+        self.id = docRef.documentID
+        
+        docRef.setData(self.data)
+    }
+    
+    //Without DB Integration
     init(id: String , firstName : String , lastName : String , username : String , phoneNumber : Int, school : School , blockedUsers : [Account]? , pushToken : String? , notificationReady : Bool , type : AccountType , blockedBy : [Account]?) {
         self.id = id
         self.firstName = firstName
@@ -191,6 +418,7 @@ struct Account {
 struct Student {
     //Identification Properties
     let account : Account
+    let id : String
     var schedule : Schedule?
     var doNotDisturb : [Course]?
     var agenda : Agenda
@@ -198,18 +426,57 @@ struct Student {
     //Privacy Settings
     var accountPrivacy : PrivacyPolicies = .classMates
     
-    //Initializer
-    init(account : Account , schedule : Schedule? , doNotDisturb : [Course]? , agenda : Agenda , accountPrivacy : PrivacyPolicies) {
+    var data : [String : Any] {
+        var tempDict : [String : Any] = ["account" : self.account.data,
+                                         "agenda" : self.agenda.data,
+                                         "accountPrivacy" : self.accountPrivacy.rawValue]
+        if let sched = self.schedule {
+            tempDict["schedule"] = sched.data
+        }
+        if let doNotDisturb = self.doNotDisturb {
+            var tinyArray : [[String : Any]] = [[:]]
+            for singleCourse in doNotDisturb {
+                tinyArray.append(singleCourse.data)
+            }
+            tempDict["doNotDisturb"] = tinyArray
+        }
+        
+        return tempDict
+    }
+    
+    //Initializers
+    
+    //With DB Integration
+    init(ref : CollectionReference, account : Account , schedule : Schedule? , doNotDisturb : [Course]? , agenda : Agenda , accountPrivacy : PrivacyPolicies) {
         self.account = account
         self.schedule = schedule
         self.doNotDisturb = doNotDisturb
         self.agenda = agenda
         self.accountPrivacy = accountPrivacy
+        
+        let docRef : DocumentReference = ref.document()
+        self.id = docRef.documentID
+        
+        docRef.setData(self.data)
+    }
+    
+    
+    //Without DB Integration
+    init(account : Account , schedule : Schedule? , doNotDisturb : [Course]? , agenda : Agenda , accountPrivacy : PrivacyPolicies, id : String) {
+        self.account = account
+        self.schedule = schedule
+        self.doNotDisturb = doNotDisturb
+        self.agenda = agenda
+        self.accountPrivacy = accountPrivacy
+        self.id = id
     }
 }
 
 struct Agenda {
     var assignments : [Assignment]
+    var data : [String : Any] {
+        return ["assignments" : self.assignments]
+    }
     init(assignments : [Assignment]) {
         self.assignments = assignments
     }
