@@ -18,7 +18,7 @@ struct School {
     let type : SchoolType
     let streetAddress : String
     let city : String
-    let zipCode : Int
+    let zipCode : String
     let state : String
     var address : String {
         return "\(streetAddress) \(city) \(state) \(zipCode)"
@@ -65,8 +65,12 @@ struct School {
         schoolQuery { (dataArray) in
             var schoolArray : [School] = []
             for data in dataArray {
-                if let tempSchool = try? School(data: data) {
-                    schoolArray.append(tempSchool)
+                if var tempSchool = try? School(data: data) {
+                    let facultyColRef : CollectionReference = db.collection("schools/\(tempSchool.id)/faculty")
+                    self.subCollectionRetrievalForSchool(ref: facultyColRef, completion: { (staff) in
+                        tempSchool.Staff = staff
+                        schoolArray.append(tempSchool)
+                    })
                 }
             }
             completion(schoolArray)
@@ -89,10 +93,57 @@ struct School {
         }
     }
     
+    func subCollectionRetrievalForSchool(ref : CollectionReference, completion: @escaping ([Faculty]) -> Void ) {
+        ref.getDocuments { (snapshot, err) in
+            if let err = err {
+                print("Error: \(err)") // error
+            } else {
+                if let snap = snapshot {
+                    var staffing : [Faculty] = []
+                    for document in snap.documents {
+                        do {
+                            try staffing.append(Faculty(data: document.data()))
+                        }
+                        catch firebaseInterpretationError.invalidKeys(let err) {
+                            print("Invalid Keys: \(err)")
+                        }
+                        catch firebaseInterpretationError.invalidValue(let err) {
+                            print("Invalid Value \(err)")
+                        }
+                        catch {
+                            print("Unexpected error")
+                        }
+                    }
+                    completion(staffing)
+                }
+            }
+        }
+    }
+    
+    func singleSchoolQuery(ref : DocumentReference, completion : @escaping (School) -> Void) {
+        ref.getDocument { (snapshot, err) in
+            if let err = err {
+                //Eerror
+                print("error: \(err)")
+            } else {
+                if let finalData = snapshot?.data() {
+                    do {
+                        let tempSkewl = try School(data: finalData)
+                        completion(tempSkewl)
+                    } catch firebaseInterpretationError.invalidKeys(let error){
+                        print("INVALID KEY ERROR: \(error)")
+                    } catch {
+                        print("Unexpected Error")
+                    }
+                }
+            }
+        }
+    }
+    
     //Initializers
     
     //With DB Integration
-    init(ref : CollectionReference, displayName : String , type : SchoolType , streetAddress : String , city : String , zipCode : Int , state : String , MaxStudentCourseLoad : Int?) {
+    init(ref : CollectionReference, displayName : String , type : SchoolType , streetAddress : String , city : String , zipCode : String , state : String , MaxStudentCourseLoad : Int?) {
         self.displayName = displayName
         self.type = type
         self.streetAddress = streetAddress
@@ -111,7 +162,7 @@ struct School {
     }
     
     //Without DB Integration
-    init(displayName : String , id: String, type : SchoolType , streetAddress : String , city : String , zipCode : Int , state : String , MaxStudentCourseLoad : Int?) {
+    init(displayName : String , id: String, type : SchoolType , streetAddress : String , city : String , zipCode : String , state : String , MaxStudentCourseLoad : Int?) {
         self.displayName = displayName
         self.id = id
         self.type = type
@@ -145,7 +196,7 @@ struct School {
         guard let city = data["city"] as? String else {
             throw firebaseInterpretationError.invalidKeys("city")
         }
-        guard let zipCode = data["zipCode"] as? Int else {
+        guard let zipCode = data["zipCode"] as? String else {
             throw firebaseInterpretationError.invalidKeys("zipCode")
         }
         guard let state = data["state"] as? String else {
@@ -240,6 +291,45 @@ struct Faculty {
     }
     
     //Initializer
+    
+    //From Data
+    init(data: [String : Any]) throws {
+        if let acct = data["account"] as? Account? {
+            self.account = acct
+        } else {
+            throw firebaseInterpretationError.invalidKeys("account")
+        }
+        if let id = data["id"] as? String {
+            self.id = id
+        } else {
+            throw firebaseInterpretationError.invalidKeys("id")
+        }
+        if let lastName = data["lastName"] as? String {
+            self.lastName = lastName
+        } else {
+            throw firebaseInterpretationError.invalidKeys("lastName")
+        }
+        if let firstName = data["firstName"] as? String? {
+            self.firstName = firstName
+        } else {
+            throw firebaseInterpretationError.invalidKeys("firstName")
+        }
+        if let titleStr = data["title"] as? String {
+            if let title = Title(rawValue: titleStr) {
+                self.title = title
+            } else {
+                throw stringToTypeError.invalidString(titleStr)
+            }
+        } else {
+            throw firebaseInterpretationError.invalidKeys("title")
+        }
+        if let schedule = data["schedule"] as? Schedule? {
+            self.schedule = schedule
+        } else {
+            throw firebaseInterpretationError.invalidKeys("schedule")
+        }
+    }
+    
     //With database integration
     init(ref : CollectionReference, lastName : String , firstName : String? , title : Title , schedule : Schedule?, account: Account?) {
         if let account = account {

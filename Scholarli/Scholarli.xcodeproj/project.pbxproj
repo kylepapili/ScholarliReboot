@@ -16,6 +16,8 @@
 		5E988E7020D8436C007CCD23 /* SecurityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E6F20D8436C007CCD23 /* SecurityViewController.swift */; };
 		5E988E7220D84925007CCD23 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E7120D84925007CCD23 /* Errors.swift */; };
 		5E988E7420D8541C007CCD23 /* SchoolSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E7320D8541C007CCD23 /* SchoolSelectorViewController.swift */; };
+		5EAC082420D9A4E500B4CDD7 /* AddClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAC082320D9A4E500B4CDD7 /* AddClassViewController.swift */; };
+		5EAC082620D9AB1700B4CDD7 /* ChooseClassesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAC082520D9AB1700B4CDD7 /* ChooseClassesViewController.swift */; };
 		5EFFFFA820D75E7600C94DF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFFFFA720D75E7600C94DF0 /* AppDelegate.swift */; };
 		5EFFFFAA20D75E7600C94DF0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFFFFA920D75E7600C94DF0 /* ViewController.swift */; };
 		5EFFFFAD20D75E7600C94DF0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EFFFFAB20D75E7600C94DF0 /* Main.storyboard */; };
@@ -58,6 +60,8 @@
 		5E988E6F20D8436C007CCD23 /* SecurityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityViewController.swift; sourceTree = "<group>"; };
 		5E988E7120D84925007CCD23 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		5E988E7320D8541C007CCD23 /* SchoolSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSelectorViewController.swift; sourceTree = "<group>"; };
+		5EAC082320D9A4E500B4CDD7 /* AddClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClassViewController.swift; sourceTree = "<group>"; };
+		5EAC082520D9AB1700B4CDD7 /* ChooseClassesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseClassesViewController.swift; sourceTree = "<group>"; };
 		5EFFFFA420D75E7600C94DF0 /* Scholarli.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholarli.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EFFFFA720D75E7600C94DF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EFFFFA920D75E7600C94DF0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 				5E988E6D20D8344C007CCD23 /* UserInfoViewController.swift */,
 				5E988E6F20D8436C007CCD23 /* SecurityViewController.swift */,
 				5E988E7320D8541C007CCD23 /* SchoolSelectorViewController.swift */,
+				5EAC082520D9AB1700B4CDD7 /* ChooseClassesViewController.swift */,
+				5EAC082320D9A4E500B4CDD7 /* AddClassViewController.swift */,
 			);
 			path = "Sign Up Process";
 			sourceTree = "<group>";
@@ -542,6 +548,8 @@
 				5EFFFFB020D75E7600C94DF0 /* Scholarli.xcdatamodeld in Sources */,
 				5EFFFFDA20D75EF300C94DF0 /* Objects.swift in Sources */,
 				5E0C588720D974E900E14D60 /* DevTestScreenViewController.swift in Sources */,
+				5EAC082420D9A4E500B4CDD7 /* AddClassViewController.swift in Sources */,
+				5EAC082620D9AB1700B4CDD7 /* ChooseClassesViewController.swift in Sources */,
 				5E988E7020D8436C007CCD23 /* SecurityViewController.swift in Sources */,
 				5E988E7220D84925007CCD23 /* Errors.swift in Sources */,
 				5EFFFFDC20D75F2A00C94DF0 /* Types.swift in Sources */,

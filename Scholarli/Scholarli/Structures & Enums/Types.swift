@@ -47,15 +47,15 @@ enum AccountType : String {
     }
 }
 
-enum Title : Int{
-    case Mr = 1
-    case Mrs = 2
-    case Ms = 3
-    case Dr = 4
-    case Sr = 5
-    case Sra = 6
-    case Srta = 7
-    case Prf = 8
+enum Title : String {
+    case Mr = "Mr."
+    case Mrs = "Mrs."
+    case Ms = "Ms."
+    case Dr = "Dr."
+    case Sr = "Sr."
+    case Sra = "Sra."
+    case Srta = "Srta."
+    case Prf = "Prf"
 }
 
 enum SchoolType : Int {

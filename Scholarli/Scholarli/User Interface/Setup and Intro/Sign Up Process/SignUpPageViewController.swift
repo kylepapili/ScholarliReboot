@@ -8,10 +8,11 @@
 
 import UIKit
 
+//Global Variables
+var newUserData : [String : Any] = [:]
+
 class SignUpPageViewController: UIPageViewController , UIPageViewControllerDataSource , UIPageViewControllerDelegate {
 
-    var newUser : [String : Any?]? = nil
-    
     lazy var orderedViewControllers : [UIViewController] = {
         return [self.newVc(viewController: "signUpVcOne") ,
                 self.newVc(viewController: "signUpVcTwo") ,

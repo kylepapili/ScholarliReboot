@@ -9,7 +9,7 @@
 import UIKit
 
 class SchoolSelectorViewController: UIViewController , UIPickerViewDelegate , UIPickerViewDataSource {
-    var listOfSchools : [School] = []
+    var listOfSchools : [School]? = []
     var currentSelection : School? = nil
     var pageVC : SignUpPageViewController?
     
@@ -17,15 +17,19 @@ class SchoolSelectorViewController: UIViewController , UIPickerViewDelegate , UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let testSchool = School.init(displayName: "test", id: "test", type: .Public, streetAddress: "63 Mel Dr", city: "chester", zipCode: 07930, state: "NJ", MaxStudentCourseLoad: 9)
+        let testSchool = School.init(displayName: "test", id: "test", type: .Public, streetAddress: "63 Mel Dr", city: "chester", zipCode: "07930", state: "NJ", MaxStudentCourseLoad: 9)
+        
         testSchool.getSchools { (listOfSchools) in
             self.listOfSchools = listOfSchools
+            print("OCTOPUS")
+            dump(listOfSchools)
             self.SchoolPicker.reloadAllComponents()
         }
     }
     
     func updateNewUser() {
-        self.pageVC?.newUser!["school"] = currentSelection
+        newUserData["school"] = currentSelection
+        print(newUserData)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -33,17 +37,27 @@ class SchoolSelectorViewController: UIViewController , UIPickerViewDelegate , UI
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return listOfSchools.count
+        if let skewls = listOfSchools {
+            return skewls.count
+        } else {
+            return 1
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return listOfSchools[row].displayName
+        if let skewls = listOfSchools {
+            return skewls[row].displayName
+        } else {
+            return "Loading..."
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.currentSelection = listOfSchools[row]
-        
+        if let skewls = listOfSchools {
+            self.currentSelection = skewls[row]
+        }
+        updateNewUser()
     }
     
-
+    
 }

@@ -24,11 +24,11 @@ class UserInfoViewController: UIViewController , UIPickerViewDelegate , UIPicker
     @IBOutlet var AccountTypeSelector: UIPickerView!
     
     func updateAccountInfo() {
-        self.pageVC?.newUser? = ["firstName" : FirstName.text,
-                                 "lastName" : LastName.text,
-                                 "userName" : Username.text,
-                                 "phoneNumber" : PhoneNumber.text,
-                                 "accountType" : currentAccountType]
+        newUserData["firstName"] = FirstName.text
+        newUserData["lastName"] = LastName.text
+        newUserData["userName"] = Username.text
+        newUserData["phoneNumber"] = PhoneNumber.text
+        newUserData["accountType"] = currentAccountType
     }
     
     override func viewDidLoad() {

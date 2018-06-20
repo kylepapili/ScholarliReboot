@@ -19,12 +19,17 @@ class SecurityViewController: UIViewController {
     @IBOutlet var ErrorLabel: UILabel!
     
     func updateAccountInfo() {
-        self.pageVC?.newUser?["password"] = Password.text
+        newUserData["password"] = Password.text
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ErrorLabel.isHidden = true
+        self.pageVC = newPvc(viewController: "SignUpPageVc") as? SignUpPageViewController
+    }
+    
+    func newPvc(viewController : String) -> UIPageViewController {
+        return UIStoryboard(name: "Main", bundle : nil).instantiateViewController(withIdentifier: viewController) as! UIPageViewController
     }
     
     func checkForConfirmation() {
