@@ -17,13 +17,14 @@ class SchoolSelectorViewController: UIViewController , UIPickerViewDelegate , UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let testSchool = School.init(displayName: "test", id: "test", type: .Public, streetAddress: "63 Mel Dr", city: "chester", zipCode: "07930", state: "NJ", MaxStudentCourseLoad: 9)
-        
-        testSchool.getSchools { (listOfSchools) in
-            self.listOfSchools = listOfSchools
-            print("OCTOPUS")
-            dump(listOfSchools)
-            self.SchoolPicker.reloadAllComponents()
+        getSchoolList { (schoolList) in
+            if let list = schoolList {
+                self.listOfSchools = list
+                self.SchoolPicker.reloadAllComponents()
+            } else {
+                print("ERROR")
+                //Error to be handled
+            }
         }
     }
     

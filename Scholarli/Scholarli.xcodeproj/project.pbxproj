@@ -11,6 +11,8 @@
 		2D754A15483671E24C4ECED1 /* Pods_Scholarli.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7109E7AED719C7AF992AB093 /* Pods_Scholarli.framework */; };
 		3571902E340294F7EFF504D1 /* Pods_ScholarliTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B042597BB33CA8479EF62D5F /* Pods_ScholarliTests.framework */; };
 		5E0C588720D974E900E14D60 /* DevTestScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0C588620D974E900E14D60 /* DevTestScreenViewController.swift */; };
+		5E93315D20E3F24400BB1C58 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E93315C20E3F24400BB1C58 /* GoogleService-Info.plist */; };
+		5E93316020E4660800BB1C58 /* DBQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E93315F20E4660800BB1C58 /* DBQueries.swift */; };
 		5E988E6C20D830A4007CCD23 /* SignUpPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E6B20D830A4007CCD23 /* SignUpPageViewController.swift */; };
 		5E988E6E20D8344C007CCD23 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E6D20D8344C007CCD23 /* UserInfoViewController.swift */; };
 		5E988E7020D8436C007CCD23 /* SecurityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E6F20D8436C007CCD23 /* SecurityViewController.swift */; };
@@ -28,7 +30,6 @@
 		5EFFFFCB20D75E7800C94DF0 /* ScholarliUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFFFFCA20D75E7800C94DF0 /* ScholarliUITests.swift */; };
 		5EFFFFDA20D75EF300C94DF0 /* Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFFFFD920D75EF300C94DF0 /* Objects.swift */; };
 		5EFFFFDC20D75F2A00C94DF0 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFFFFDB20D75F2A00C94DF0 /* Types.swift */; };
-		5EFFFFDE20D774AB00C94DF0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5EFFFFDD20D774AB00C94DF0 /* GoogleService-Info.plist */; };
 		5EFFFFE220D779EB00C94DF0 /* WelcomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFFFFE120D779EB00C94DF0 /* WelcomePageViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,8 @@
 		406DE5641403170FBC3E01D2 /* Pods_ScholarliUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScholarliUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		48CB5882D3641A398CC08339 /* Pods-Scholarli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scholarli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Scholarli/Pods-Scholarli.debug.xcconfig"; sourceTree = "<group>"; };
 		5E0C588620D974E900E14D60 /* DevTestScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevTestScreenViewController.swift; sourceTree = "<group>"; };
+		5E93315C20E3F24400BB1C58 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		5E93315F20E4660800BB1C58 /* DBQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBQueries.swift; sourceTree = "<group>"; };
 		5E988E6B20D830A4007CCD23 /* SignUpPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPageViewController.swift; sourceTree = "<group>"; };
 		5E988E6D20D8344C007CCD23 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		5E988E6F20D8436C007CCD23 /* SecurityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityViewController.swift; sourceTree = "<group>"; };
@@ -78,7 +81,6 @@
 		5EFFFFCC20D75E7800C94DF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5EFFFFD920D75EF300C94DF0 /* Objects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Objects.swift; sourceTree = "<group>"; };
 		5EFFFFDB20D75F2A00C94DF0 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
-		5EFFFFDD20D774AB00C94DF0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5EFFFFE120D779EB00C94DF0 /* WelcomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomePageViewController.swift; sourceTree = "<group>"; };
 		7109E7AED719C7AF992AB093 /* Pods_Scholarli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Scholarli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		838C4FBA7A406EBFFB533767 /* Pods-ScholarliUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScholarliUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ScholarliUITests/Pods-ScholarliUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -123,6 +125,14 @@
 			path = "Developer Testing";
 			sourceTree = "<group>";
 		};
+		5E93315E20E465F300BB1C58 /* Database Functions */ = {
+			isa = PBXGroup;
+			children = (
+				5E93315F20E4660800BB1C58 /* DBQueries.swift */,
+			);
+			path = "Database Functions";
+			sourceTree = "<group>";
+		};
 		5E988E6A20D8308C007CCD23 /* Sign Up Process */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +171,7 @@
 		5EFFFFA620D75E7600C94DF0 /* Scholarli */ = {
 			isa = PBXGroup;
 			children = (
+				5E93315E20E465F300BB1C58 /* Database Functions */,
 				5EFFFFD820D75EAA00C94DF0 /* Structures & Enums */,
 				5EFFFFDF20D779B400C94DF0 /* User Interface */,
 				5EFFFFA720D75E7600C94DF0 /* AppDelegate.swift */,
@@ -170,7 +181,7 @@
 				5EFFFFB320D75E7800C94DF0 /* LaunchScreen.storyboard */,
 				5EFFFFB620D75E7800C94DF0 /* Info.plist */,
 				5EFFFFAE20D75E7600C94DF0 /* Scholarli.xcdatamodeld */,
-				5EFFFFDD20D774AB00C94DF0 /* GoogleService-Info.plist */,
+				5E93315C20E3F24400BB1C58 /* GoogleService-Info.plist */,
 			);
 			path = Scholarli;
 			sourceTree = "<group>";
@@ -355,7 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EFFFFB520D75E7800C94DF0 /* LaunchScreen.storyboard in Resources */,
-				5EFFFFDE20D774AB00C94DF0 /* GoogleService-Info.plist in Resources */,
+				5E93315D20E3F24400BB1C58 /* GoogleService-Info.plist in Resources */,
 				5EFFFFB220D75E7800C94DF0 /* Assets.xcassets in Resources */,
 				5EFFFFAD20D75E7600C94DF0 /* Main.storyboard in Resources */,
 			);
@@ -542,6 +553,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E988E7420D8541C007CCD23 /* SchoolSelectorViewController.swift in Sources */,
+				5E93316020E4660800BB1C58 /* DBQueries.swift in Sources */,
 				5EFFFFAA20D75E7600C94DF0 /* ViewController.swift in Sources */,
 				5E988E6E20D8344C007CCD23 /* UserInfoViewController.swift in Sources */,
 				5E988E6C20D830A4007CCD23 /* SignUpPageViewController.swift in Sources */,

@@ -47,7 +47,7 @@ enum AccountType : String {
     }
 }
 
-enum Title : String {
+enum FacTitle : String {
     case Mr = "Mr."
     case Mrs = "Mrs."
     case Ms = "Ms."
@@ -56,6 +56,11 @@ enum Title : String {
     case Sra = "Sra."
     case Srta = "Srta."
     case Prf = "Prf"
+    
+    static var count: Int {
+        return FacTitle.Prf.hashValue + 1
+    }
+    static let allValues = [Mr, Mrs, Ms, Dr, Sr, Sra, Srta, Prf]
 }
 
 enum SchoolType : Int {

@@ -11,6 +11,7 @@ import Firebase
 
 let db = Firestore.firestore()
 
+
 struct School {
     //Identification Properties
     let displayName : String
@@ -61,84 +62,109 @@ struct School {
     }
     
     //Functions
-    func getSchools(completion: @escaping ([School]) -> Void) {
-        schoolQuery { (dataArray) in
-            var schoolArray : [School] = []
-            for data in dataArray {
-                if var tempSchool = try? School(data: data) {
-                    let facultyColRef : CollectionReference = db.collection("schools/\(tempSchool.id)/faculty")
-                    self.subCollectionRetrievalForSchool(ref: facultyColRef, completion: { (staff) in
-                        tempSchool.Staff = staff
-                        schoolArray.append(tempSchool)
-                    })
-                }
-            }
-            completion(schoolArray)
-        }
-    }
-    
-    func schoolQuery(completion: @escaping ([[String : Any]]) -> Void) {
-        let schoolsRef = db.collection("schools")
-        schoolsRef.getDocuments { (querySnapshot, err) in
+    func getFaculty(completion: @escaping ([Faculty]) -> Void) {
+        let schoolRef = db.collection("schools/\(self.id)/faculty")
+        schoolRef.getDocuments { (snapshot, err) in
             if let err = err {
-                //Error
-                print("error: \(err)")
+                print("Error fetching faculty: \(err)")
+                return
             } else {
-                var returnValue : [[String : Any]] = [[:]]
-                for document in (querySnapshot?.documents)! {
-                    returnValue.append(document.data())
-                }
-                completion(returnValue)
-            }
-        }
-    }
-    
-    func subCollectionRetrievalForSchool(ref : CollectionReference, completion: @escaping ([Faculty]) -> Void ) {
-        ref.getDocuments { (snapshot, err) in
-            if let err = err {
-                print("Error: \(err)") // error
-            } else {
-                if let snap = snapshot {
-                    var staffing : [Faculty] = []
-                    for document in snap.documents {
-                        do {
-                            try staffing.append(Faculty(data: document.data()))
+                do {
+                    var facList : [Faculty] = []
+                    if let docs = snapshot?.documents {
+                        for document in docs {
+                            let fac = try Faculty(data: document.data())
+                            facList.append(fac)
                         }
-                        catch firebaseInterpretationError.invalidKeys(let err) {
-                            print("Invalid Keys: \(err)")
-                        }
-                        catch firebaseInterpretationError.invalidValue(let err) {
-                            print("Invalid Value \(err)")
-                        }
-                        catch {
-                            print("Unexpected error")
-                        }
-                    }
-                    completion(staffing)
-                }
-            }
-        }
-    }
-    
-    func singleSchoolQuery(ref : DocumentReference, completion : @escaping (School) -> Void) {
-        ref.getDocument { (snapshot, err) in
-            if let err = err {
-                //Eerror
-                print("error: \(err)")
-            } else {
-                if let finalData = snapshot?.data() {
-                    do {
-                        let tempSkewl = try School(data: finalData)
-                        completion(tempSkewl)
-                    } catch firebaseInterpretationError.invalidKeys(let error){
-                        print("INVALID KEY ERROR: \(error)")
-                    } catch {
-                        print("Unexpected Error")
+                        completion(facList)
                     }
                 }
+                catch {
+                    print("Error in getting faculty member")
+                    return
+                }
             }
         }
     }
+//    //Functions
+//    func getSchools(completion: @escaping ([School]) -> Void) {
+//        schoolQuery { (dataArray) in
+//            var schoolArray : [School] = []
+//            for data in dataArray {
+//                if var tempSchool = try? School(data: data) {
+//                    let facultyColRef : CollectionReference = db.collection("schools/\(tempSchool.id)/faculty")
+//                    self.subCollectionRetrievalForSchool(ref: facultyColRef, completion: { (staff) in
+//                        tempSchool.Staff = staff
+//                        schoolArray.append(tempSchool)
+//                    })
+//                }
+//            }
+//            completion(schoolArray)
+//        }
+//    }
+//
+//    func schoolQuery(completion: @escaping ([[String : Any]]) -> Void) {
+//        let schoolsRef = db.collection("schools")
+//        schoolsRef.getDocuments { (querySnapshot, err) in
+//            if let err = err {
+//                //Error
+//                print("error: \(err)")
+//            } else {
+//                var returnValue : [[String : Any]] = [[:]]
+//                for document in (querySnapshot?.documents)! {
+//                    returnValue.append(document.data())
+//                }
+//                completion(returnValue)
+//            }
+//        }
+//    }
+//
+//    func subCollectionRetrievalForSchool(ref : CollectionReference, completion: @escaping ([Faculty]) -> Void ) {
+//        ref.getDocuments { (snapshot, err) in
+//            if let err = err {
+//                print("Error: \(err)") // error
+//            } else {
+//                if let snap = snapshot {
+//                    var staffing : [Faculty] = []
+//                    for document in snap.documents {
+//                        do {
+//                            try staffing.append(Faculty(data: document.data()))
+//                        }
+//                        catch firebaseInterpretationError.invalidKeys(let err) {
+//                            print("Invalid Keys: \(err)")
+//                        }
+//                        catch firebaseInterpretationError.invalidValue(let err) {
+//                            print("Invalid Value \(err)")
+//                        }
+//                        catch {
+//                            print("Unexpected error")
+//                        }
+//                    }
+//                    completion(staffing)
+//                }
+//            }
+//        }
+//    }
+//
+//    func singleSchoolQuery(ref : DocumentReference, completion : @escaping (School) -> Void) {
+//        ref.getDocument { (snapshot, err) in
+//            if let err = err {
+//                //Eerror
+//                print("error: \(err)")
+//            } else {
+//                if let finalData = snapshot?.data() {
+//                    do {
+//                        let tempSkewl = try School(data: finalData)
+//                        completion(tempSkewl)
+//                    } catch firebaseInterpretationError.invalidKeys(let error){
+//                        print("INVALID KEY ERROR: \(error)")
+//                    } catch {
+//                        print("Unexpected Error")
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     //Initializers
     
@@ -216,13 +242,13 @@ struct Course {
     let displayName : String
     let id : String
     let teacher : Faculty
-    let school : School
+    let schoolId : String
     let period : Int
     let classroom : String?
     
     var data : [String : Any] {
         var tempDict : [String : Any] = [:]
-        tempDict = ["displayName" : self.displayName, "id" : self.id, "teacher" : self.teacher.data, "school" : self.school.data, "period" : self.period]
+        tempDict = ["displayName" : self.displayName, "id" : self.id, "teacher" : self.teacher.data, "schoolId" : self.schoolId, "period" : self.period]
         if let classroom = self.classroom {
             tempDict["classroom"] = classroom
         }
@@ -230,11 +256,31 @@ struct Course {
     }
     
     //Initializers
+    init(ref: CollectionReference, data: [String : Any]) throws {
+        guard let displayName = data["displayName"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("displayName")
+        }
+        guard let teacher = data["teacher"] as? Faculty else {
+            throw firebaseInterpretationError.invalidKeys("teacher")
+        }
+        guard let schoolId = data["schoolId"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("schoolId")
+        }
+        guard let period = data["period"] as? Int else {
+            throw firebaseInterpretationError.invalidKeys("period")
+        }
+        guard let classroom = data["classroom"] as? String? else {
+            throw firebaseInterpretationError.invalidKeys("classroom")
+        }
+        
+        self.init(ref: ref, displayname: displayName, teacher: teacher, schoolId: schoolId, period: period, classroom: classroom)
+    }
+    
     //without ID Specified
-    init(ref: CollectionReference, displayname : String , teacher: Faculty, school: School, period: Int, classroom: String?) {
+    init(ref: CollectionReference, displayname : String , teacher: Faculty, schoolId: String, period: Int, classroom: String?) {
         self.displayName = displayname
         self.teacher = teacher
-        self.school = school
+        self.schoolId = schoolId
         self.period = period
         if let unwrapped = classroom {
             self.classroom = unwrapped
@@ -248,11 +294,11 @@ struct Course {
     }
     
     //With ID specified
-    init(displayName : String , id: String, teacher: Faculty, school: School, period: Int, classroom: String?) {
+    init(displayName : String , id: String, teacher: Faculty, schoolId: String, period: Int, classroom: String?) {
         self.displayName = displayName
         self.id = id
         self.teacher = teacher
-        self.school = school
+        self.schoolId = schoolId
         self.period = period
         if let unwrapped = classroom {
             self.classroom = unwrapped
@@ -268,7 +314,7 @@ struct Faculty {
     let id : String
     let lastName : String
     let firstName : String?
-    let title : Title
+    let title : FacTitle
     var fullLastName : String {
         return "\(title) \(lastName)"
     }
@@ -297,7 +343,7 @@ struct Faculty {
         if let acct = data["account"] as? Account? {
             self.account = acct
         } else {
-            throw firebaseInterpretationError.invalidKeys("account")
+            self.account = nil
         }
         if let id = data["id"] as? String {
             self.id = id
@@ -315,7 +361,7 @@ struct Faculty {
             throw firebaseInterpretationError.invalidKeys("firstName")
         }
         if let titleStr = data["title"] as? String {
-            if let title = Title(rawValue: titleStr) {
+            if let title = FacTitle(rawValue: titleStr) {
                 self.title = title
             } else {
                 throw stringToTypeError.invalidString(titleStr)
@@ -326,12 +372,44 @@ struct Faculty {
         if let schedule = data["schedule"] as? Schedule? {
             self.schedule = schedule
         } else {
-            throw firebaseInterpretationError.invalidKeys("schedule")
+            self.schedule = nil
         }
     }
     
     //With database integration
-    init(ref : CollectionReference, lastName : String , firstName : String? , title : Title , schedule : Schedule?, account: Account?) {
+    init(ref : CollectionReference, data: [String : Any]) throws {
+        if let acct = data["account"] as? Account? {
+            self.account = acct
+        } else {
+            self.account = nil
+        }
+        if let lastName = data["lastName"] as? String {
+            self.lastName = lastName
+        } else {
+            throw firebaseInterpretationError.invalidKeys("lastName")
+        }
+        if let firstName = data["firstName"] as? String? {
+            self.firstName = firstName
+        } else {
+            throw firebaseInterpretationError.invalidKeys("firstName")
+        }
+        if let title = data["title"] as? FacTitle {
+            self.title = title
+        } else {
+            throw firebaseInterpretationError.invalidKeys("title")
+        }
+        if let schedule = data["schedule"] as? Schedule? {
+            self.schedule = schedule
+        } else {
+            self.schedule = nil
+        }
+        
+        let docRef : DocumentReference = ref.document()
+        self.id = docRef.documentID
+        docRef.setData(self.data)
+    }
+    
+    init(ref : CollectionReference, lastName : String , firstName : String? , title : FacTitle , schedule : Schedule?, account: Account?) {
         if let account = account {
             self.account = account
         } else {
@@ -356,7 +434,7 @@ struct Faculty {
     }
     
     //Without database integration
-    init(account : Account?, lastName : String , firstName : String? , title : Title , schedule : Schedule?, id : String) {
+    init(account : Account?, lastName : String , firstName : String? , title : FacTitle , schedule : Schedule?, id : String) {
         if let account = account {
             self.account = account
         } else {
@@ -421,7 +499,7 @@ struct Account {
     let lastName : String
     var username : String
     var phoneNumber : Int
-    var school : School?
+    var schoolId : String
     
     //Preferences
     var blockedUsers : [Account]?
@@ -441,10 +519,8 @@ struct Account {
                                          "phoneNumber" : self.phoneNumber,
                                          "notificationReady" : self.notificationReady,
                                          "type" : self.type.rawValue,
-                                         "karmaLevel" : self.KarmaLevel]
-        if let school = self.school {
-            tempDict["school"] = school.data
-        }
+                                         "karmaLevel" : self.KarmaLevel,
+                                         "schoolId" : self.schoolId]
         if let blockedUsers = self.blockedUsers {
             var tinyArray : [[String : Any]] = [[:]]
             for user in blockedUsers {
@@ -469,12 +545,12 @@ struct Account {
     //Initializers
     
     //With DB Integration
-    init(ref: CollectionReference, firstName : String , lastName : String , username : String , phoneNumber : Int, school : School , blockedUsers : [Account]? , pushToken : String? , notificationReady : Bool , type : AccountType , blockedBy : [Account]?) {
+    init(ref: CollectionReference, firstName : String , lastName : String , username : String , phoneNumber : Int, schoolId : String , blockedUsers : [Account]? , pushToken : String? , notificationReady : Bool , type : AccountType , blockedBy : [Account]?) {
         self.firstName = firstName
         self.lastName = lastName
         self.username = username
         self.phoneNumber = phoneNumber
-        self.school = school
+        self.schoolId = schoolId
         self.blockedUsers = blockedUsers
         self.pushToken = pushToken
         self.notificationReady = notificationReady
@@ -489,13 +565,13 @@ struct Account {
     }
     
     //Without DB Integration
-    init(id: String , firstName : String , lastName : String , username : String , phoneNumber : Int, school : School , blockedUsers : [Account]? , pushToken : String? , notificationReady : Bool , type : AccountType , blockedBy : [Account]?) {
+    init(id: String , firstName : String , lastName : String , username : String , phoneNumber : Int, schoolId : String , blockedUsers : [Account]? , pushToken : String? , notificationReady : Bool , type : AccountType , blockedBy : [Account]?) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.username = username
         self.phoneNumber = phoneNumber
-        self.school = school
+        self.schoolId = schoolId
         self.blockedUsers = blockedUsers
         self.pushToken = pushToken
         self.notificationReady = notificationReady
