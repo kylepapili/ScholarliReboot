@@ -63,7 +63,19 @@ class SignUpPageViewController: UIPageViewController , UIPageViewControllerDataS
         guard orderedViewControllers.count > nextIndex else {
             return nil
         }
-        return orderedViewControllers[nextIndex]
+        if let nextVC = orderedViewControllers[nextIndex] as? ChooseClassesViewController {
+            print("Here we are")
+            if let tempSchool = newUserData["school"] as? School {
+                nextVC.userSchool = tempSchool
+                return nextVC
+            } else {
+                print("Else 2 called")
+                return orderedViewControllers[nextIndex]
+            }
+        } else {
+            print("Else 3 called")
+            return orderedViewControllers[nextIndex]
+        }
     }
     
 }

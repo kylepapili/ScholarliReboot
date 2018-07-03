@@ -86,86 +86,41 @@ struct School {
             }
         }
     }
-//    //Functions
-//    func getSchools(completion: @escaping ([School]) -> Void) {
-//        schoolQuery { (dataArray) in
-//            var schoolArray : [School] = []
-//            for data in dataArray {
-//                if var tempSchool = try? School(data: data) {
-//                    let facultyColRef : CollectionReference = db.collection("schools/\(tempSchool.id)/faculty")
-//                    self.subCollectionRetrievalForSchool(ref: facultyColRef, completion: { (staff) in
-//                        tempSchool.Staff = staff
-//                        schoolArray.append(tempSchool)
-//                    })
-//                }
-//            }
-//            completion(schoolArray)
-//        }
-//    }
-//
-//    func schoolQuery(completion: @escaping ([[String : Any]]) -> Void) {
-//        let schoolsRef = db.collection("schools")
-//        schoolsRef.getDocuments { (querySnapshot, err) in
-//            if let err = err {
-//                //Error
-//                print("error: \(err)")
-//            } else {
-//                var returnValue : [[String : Any]] = [[:]]
-//                for document in (querySnapshot?.documents)! {
-//                    returnValue.append(document.data())
-//                }
-//                completion(returnValue)
-//            }
-//        }
-//    }
-//
-//    func subCollectionRetrievalForSchool(ref : CollectionReference, completion: @escaping ([Faculty]) -> Void ) {
-//        ref.getDocuments { (snapshot, err) in
-//            if let err = err {
-//                print("Error: \(err)") // error
-//            } else {
-//                if let snap = snapshot {
-//                    var staffing : [Faculty] = []
-//                    for document in snap.documents {
-//                        do {
-//                            try staffing.append(Faculty(data: document.data()))
-//                        }
-//                        catch firebaseInterpretationError.invalidKeys(let err) {
-//                            print("Invalid Keys: \(err)")
-//                        }
-//                        catch firebaseInterpretationError.invalidValue(let err) {
-//                            print("Invalid Value \(err)")
-//                        }
-//                        catch {
-//                            print("Unexpected error")
-//                        }
-//                    }
-//                    completion(staffing)
-//                }
-//            }
-//        }
-//    }
-//
-//    func singleSchoolQuery(ref : DocumentReference, completion : @escaping (School) -> Void) {
-//        ref.getDocument { (snapshot, err) in
-//            if let err = err {
-//                //Eerror
-//                print("error: \(err)")
-//            } else {
-//                if let finalData = snapshot?.data() {
-//                    do {
-//                        let tempSkewl = try School(data: finalData)
-//                        completion(tempSkewl)
-//                    } catch firebaseInterpretationError.invalidKeys(let error){
-//                        print("INVALID KEY ERROR: \(error)")
-//                    } catch {
-//                        print("Unexpected Error")
-//                    }
-//                }
-//            }
-//        }
-//    }
     
+    func getCourseList(completion: @escaping ([Course]) -> Void) {
+        let courseRef = db.collection("schools/\(self.id)/courseList")
+        courseRef.getDocuments { (snapshot, err) in
+            if let err = err {
+                print("ERROR In getting documents: \(err)")
+                return
+            } else {
+                if let documents = snapshot?.documents {
+                    var courseList : [Course] = []
+                    for doc in documents {
+                        let data = doc.data()
+                        var tempCourse : Course? = nil
+                        do {
+                            print("IN DO")
+                            print(data["displayName"])
+                            dump(data)
+                            tempCourse = try Course(data: data)
+                        } catch let err as firebaseInterpretationError {
+                            print("Error in initializing course: \(err)")
+                            return
+                        } catch {
+                            print("Unknown error in initializing course")
+                        }
+                        if let tempCrs = tempCourse {
+                            courseList.append(tempCrs)
+                        }
+                    }
+                    print("FOR LOOP COMPLETED")
+                    dump(courseList)
+                    completion(courseList)
+                }
+            }
+        }
+    }
     //Initializers
     
     //With DB Integration
@@ -203,6 +158,7 @@ struct School {
         }
     }
     
+    
     init(data: [String : Any]) throws {
         guard let displayName = data["displayName"] as? String else {
             throw firebaseInterpretationError.invalidKeys("displayName")
@@ -233,7 +189,6 @@ struct School {
         }
         
         self.init(displayName: displayName, id: id, type: type, streetAddress: streetAddress, city: city, zipCode: zipCode, state: state, MaxStudentCourseLoad: maxStudentCourseLoad)
-        
     }
 }
 
@@ -274,6 +229,33 @@ struct Course {
         }
         
         self.init(ref: ref, displayname: displayName, teacher: teacher, schoolId: schoolId, period: period, classroom: classroom)
+    }
+    
+    init(data: [String : Any]) throws {
+        guard let displayName = data["displayName"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("displayName")
+        }
+        guard let teacherData = data["teacher"] as? [String : Any] else {
+            throw firebaseInterpretationError.invalidKeys("teacher")
+        }
+        guard let schoolId = data["schoolId"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("schoolId")
+        }
+        guard let period = data["period"] as? Int else {
+            throw firebaseInterpretationError.invalidKeys("period")
+        }
+        guard let classroom = data["classroom"] as? String? else {
+            throw firebaseInterpretationError.invalidKeys("classroom")
+        }
+        guard let id = data["id"] as? String else {
+            throw firebaseInterpretationError.invalidKeys("id")
+        }
+        do {
+            let teacher = try Faculty(data: teacherData)
+            self.init(displayName: displayName, id: id, teacher: teacher, schoolId: schoolId, period: period, classroom: classroom)
+        } catch {
+            throw firebaseInterpretationError.invalidValue(teacherData.description)
+        }
     }
     
     //without ID Specified

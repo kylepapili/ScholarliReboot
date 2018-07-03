@@ -246,6 +246,8 @@ class AddClassViewController: UIViewController , UIPickerViewDelegate , UIPicker
                 do {
                     dump(addTeacherData)
                     let teacher = try Faculty(ref: colRef, data: addTeacherData)
+                    self.school?.Staff?.append(teacher)
+                    
                 } catch let err as firebaseInterpretationError {
                     print("Error: \(err.localizedDescription)")
                 } catch {
@@ -254,18 +256,37 @@ class AddClassViewController: UIViewController , UIPickerViewDelegate , UIPicker
             } else {
                 print("School ID Error")
             }
+            
+            self.Picker.reloadAllComponents()
+            
             animateOut()
             self.ClassTitle.isUserInteractionEnabled = true
             self.RoomNumber.isUserInteractionEnabled = true
             self.TeacherButton.isEnabled = true
             self.PeriodButton.isEnabled = true
             self.AddClassButton.isEnabled = true
+            self.teacherLast.text = nil
+            self.teacherFirst.text = nil
+            self.TeacherPicker.selectRow(0, inComponent: 0, animated: false)
         } else {
             let failureAlert = UIAlertController(title: "Unable to Add Teacher", message: result, preferredStyle: .alert)
             failureAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             
             self.present(failureAlert, animated: true)
         }
+    }
+    
+    @IBAction func cancelAddTeacher(_ sender: Any) {
+        self.Picker.reloadAllComponents()
+        animateOut()
+        self.ClassTitle.isUserInteractionEnabled = true
+        self.RoomNumber.isUserInteractionEnabled = true
+        self.TeacherButton.isEnabled = true
+        self.PeriodButton.isEnabled = true
+        self.AddClassButton.isEnabled = true
+        self.teacherLast.text = nil
+        self.teacherFirst.text = nil
+        self.TeacherPicker.selectRow(0, inComponent: 0, animated: false)
     }
     
     
