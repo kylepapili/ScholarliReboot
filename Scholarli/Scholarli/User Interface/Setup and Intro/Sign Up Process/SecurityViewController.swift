@@ -9,8 +9,6 @@
 import UIKit
 
 class SecurityViewController: UIViewController {
-    //PageVC Reference
-    var pageVC : SignUpPageViewController?
     
     //Outlets
     
@@ -24,9 +22,7 @@ class SecurityViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ErrorLabel.isHidden = true
-        self.pageVC = newPvc(viewController: "SignUpPageVc") as? SignUpPageViewController
-    }
+        ErrorLabel.isHidden = true    }
     
     func newPvc(viewController : String) -> UIPageViewController {
         return UIStoryboard(name: "Main", bundle : nil).instantiateViewController(withIdentifier: viewController) as! UIPageViewController

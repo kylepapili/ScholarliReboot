@@ -12,9 +12,9 @@
 		3571902E340294F7EFF504D1 /* Pods_ScholarliTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B042597BB33CA8479EF62D5F /* Pods_ScholarliTests.framework */; };
 		5E0C588720D974E900E14D60 /* DevTestScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0C588620D974E900E14D60 /* DevTestScreenViewController.swift */; };
 		5E1F813E20E6EF4100133B37 /* CourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1F813D20E6EF4100133B37 /* CourseTableViewCell.swift */; };
+		5E45CA6720EBECDE008C8D2D /* FinalSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45CA6620EBECDE008C8D2D /* FinalSetupViewController.swift */; };
 		5E93315D20E3F24400BB1C58 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E93315C20E3F24400BB1C58 /* GoogleService-Info.plist */; };
 		5E93316020E4660800BB1C58 /* DBQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E93315F20E4660800BB1C58 /* DBQueries.swift */; };
-		5E988E6C20D830A4007CCD23 /* SignUpPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E6B20D830A4007CCD23 /* SignUpPageViewController.swift */; };
 		5E988E6E20D8344C007CCD23 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E6D20D8344C007CCD23 /* UserInfoViewController.swift */; };
 		5E988E7020D8436C007CCD23 /* SecurityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E6F20D8436C007CCD23 /* SecurityViewController.swift */; };
 		5E988E7220D84925007CCD23 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E7120D84925007CCD23 /* Errors.swift */; };
@@ -58,9 +58,9 @@
 		48CB5882D3641A398CC08339 /* Pods-Scholarli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scholarli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Scholarli/Pods-Scholarli.debug.xcconfig"; sourceTree = "<group>"; };
 		5E0C588620D974E900E14D60 /* DevTestScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevTestScreenViewController.swift; sourceTree = "<group>"; };
 		5E1F813D20E6EF4100133B37 /* CourseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewCell.swift; sourceTree = "<group>"; };
+		5E45CA6620EBECDE008C8D2D /* FinalSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalSetupViewController.swift; sourceTree = "<group>"; };
 		5E93315C20E3F24400BB1C58 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		5E93315F20E4660800BB1C58 /* DBQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBQueries.swift; sourceTree = "<group>"; };
-		5E988E6B20D830A4007CCD23 /* SignUpPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPageViewController.swift; sourceTree = "<group>"; };
 		5E988E6D20D8344C007CCD23 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		5E988E6F20D8436C007CCD23 /* SecurityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityViewController.swift; sourceTree = "<group>"; };
 		5E988E7120D84925007CCD23 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -138,13 +138,13 @@
 		5E988E6A20D8308C007CCD23 /* Sign Up Process */ = {
 			isa = PBXGroup;
 			children = (
-				5E988E6B20D830A4007CCD23 /* SignUpPageViewController.swift */,
 				5E988E6D20D8344C007CCD23 /* UserInfoViewController.swift */,
-				5E988E7320D8541C007CCD23 /* SchoolSelectorViewController.swift */,
 				5E988E6F20D8436C007CCD23 /* SecurityViewController.swift */,
+				5E988E7320D8541C007CCD23 /* SchoolSelectorViewController.swift */,
 				5EAC082520D9AB1700B4CDD7 /* ChooseClassesViewController.swift */,
 				5EAC082320D9A4E500B4CDD7 /* AddClassViewController.swift */,
 				5E1F813D20E6EF4100133B37 /* CourseTableViewCell.swift */,
+				5E45CA6620EBECDE008C8D2D /* FinalSetupViewController.swift */,
 			);
 			path = "Sign Up Process";
 			sourceTree = "<group>";
@@ -558,8 +558,8 @@
 				5E988E7420D8541C007CCD23 /* SchoolSelectorViewController.swift in Sources */,
 				5E93316020E4660800BB1C58 /* DBQueries.swift in Sources */,
 				5EFFFFAA20D75E7600C94DF0 /* ViewController.swift in Sources */,
+				5E45CA6720EBECDE008C8D2D /* FinalSetupViewController.swift in Sources */,
 				5E988E6E20D8344C007CCD23 /* UserInfoViewController.swift in Sources */,
-				5E988E6C20D830A4007CCD23 /* SignUpPageViewController.swift in Sources */,
 				5EFFFFB020D75E7600C94DF0 /* Scholarli.xcdatamodeld in Sources */,
 				5EFFFFDA20D75EF300C94DF0 /* Objects.swift in Sources */,
 				5E0C588720D974E900E14D60 /* DevTestScreenViewController.swift in Sources */,

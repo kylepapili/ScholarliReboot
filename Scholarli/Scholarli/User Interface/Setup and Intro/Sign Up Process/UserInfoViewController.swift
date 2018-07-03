@@ -8,9 +8,8 @@
 
 import UIKit
 
+var newUserData : [String : Any] = [:]
 class UserInfoViewController: UIViewController , UIPickerViewDelegate , UIPickerViewDataSource {
-    //PageVC Reference
-    var pageVC : SignUpPageViewController?
     
     //Properties
     var currentAccountType : AccountType? = nil
@@ -34,7 +33,6 @@ class UserInfoViewController: UIViewController , UIPickerViewDelegate , UIPicker
     override func viewDidLoad() {
         super.viewDidLoad()
         AccountTypeSelector.isHidden = true
-        self.pageVC = newPvc(viewController: "SignUpPageVc") as? SignUpPageViewController
     }
     
     func newPvc(viewController : String) -> UIPageViewController {
@@ -43,6 +41,13 @@ class UserInfoViewController: UIViewController , UIPickerViewDelegate , UIPicker
     
     @IBAction func SelectAccountType(_ sender: Any) {
         AccountTypeSelector.isHidden = false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "signUpSegueOne" {
+            //Error Check and update
+            updateAccountInfo()
+        }
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

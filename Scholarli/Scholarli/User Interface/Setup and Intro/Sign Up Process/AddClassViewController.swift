@@ -379,6 +379,27 @@ class AddClassViewController: UIViewController , UIPickerViewDelegate , UIPicker
             return returnStr
         }
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "cancelAddClass" {
+            let destinationVC = segue.destination as? ChooseClassesViewController
+            if var school = newUserData["school"] as? School {
+                school.getCourseList { (crsList) in
+                    school.CourseList = crsList
+                    destinationVC?.userSchool = school
+                    destinationVC?.tableView.reloadData()
+                }
+            }
+        } else if segue.identifier == "returnToSignUpChooseClass" {
+            let destinationVC = segue.destination as? ChooseClassesViewController
+            if var school = newUserData["school"] as? School {
+                school.getCourseList { (crsList) in
+                    school.CourseList = crsList
+                    destinationVC?.userSchool = school
+                    destinationVC?.tableView.reloadData()
+                }
+            }
+        }
+    }
     
     //Add Teacher IB Actions and Outlets
     

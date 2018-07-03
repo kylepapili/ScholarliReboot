@@ -12,25 +12,13 @@ class ChooseClassesViewController: UIViewController , UITableViewDataSource , UI
     
     
     @IBOutlet var tableView: UITableView!
-    var pageVC : SignUpPageViewController?
     var userSchool : School? = nil
     let schoolAlert = UIAlertController(title: "Error", message: "Please Select a School.", preferredStyle: .alert)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("VIEW DID FINALLY LOAD******")
-        dump(self.userSchool)
         schoolAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        if let school = self.userSchool {
-            school.getCourseList { (crsList) in
-                print("Printing the courselist")
-                dump(crsList)
-                self.userSchool?.CourseList = crsList
-                self.tableView.reloadData()
-            }
-        } else {
-            print("School is nil")
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
