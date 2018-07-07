@@ -49,6 +49,7 @@ class AddClassViewController: UIViewController , UIPickerViewDelegate , UIPicker
     var currentTeacher : Faculty? = nil
     var currentTeacherRow : Int? = nil
     var effect : UIVisualEffect!
+    var scheduleToReturn : Schedule? = nil
     
     //Temporary Type
     enum currentSelector {
@@ -233,6 +234,7 @@ class AddClassViewController: UIViewController , UIPickerViewDelegate , UIPicker
         self.PeriodButton.isEnabled = false
         self.AddClassButton.isEnabled = false
         self.Picker.isHidden = true
+        self.currentNewTeacherTitle = FacTitle.Mr
     }
     
     @IBAction func endAddTeacher(_ sender: Any) {
@@ -312,20 +314,23 @@ class AddClassViewController: UIViewController , UIPickerViewDelegate , UIPicker
             return
         }
         let collectionRef = db.collection("schools/\(schoolID)/courseList")
-        print("Octopus:")
-        dump(self.classData)
+        let successAlert = UIAlertController(title: "Your Class Has Been Added", message: "Thank You For Your Contribution!", preferredStyle: .alert)
         do {
-            _ = try Course(ref: collectionRef, data: self.classData)
+            
+            let newCrs = try Course(ref: collectionRef, data: self.classData)
+            successAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+                let result = verifyNewCourseToSchedule(courseToAdd: newCrs, schedule: self.scheduleToReturn)
+                if result {
+                    self.scheduleToReturn?.courseLoad?.append(newCrs)
+                }
+                self.performSegue(withIdentifier: "returnToSignUpChooseClass", sender: self)
+            }))
+            
         } catch let error as firebaseInterpretationError {
             print("Error adding class: \(error)")
         } catch {
             print("Unknown error adding class")
         }
-        
-        let successAlert = UIAlertController(title: "Your Class Has Been Added", message: "Thank You For Your Contribution!", preferredStyle: .alert)
-        successAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
-            self.performSegue(withIdentifier: "returnToSignUpChooseClass", sender: self)
-        }))
         
         self.present(successAlert, animated: true)
     }
@@ -386,6 +391,7 @@ class AddClassViewController: UIViewController , UIPickerViewDelegate , UIPicker
                 school.getCourseList { (crsList) in
                     school.CourseList = crsList
                     destinationVC?.userSchool = school
+                    destinationVC?.currentUserSchedule = self.scheduleToReturn
                     destinationVC?.tableView.reloadData()
                 }
             }
@@ -395,7 +401,13 @@ class AddClassViewController: UIViewController , UIPickerViewDelegate , UIPicker
                 school.getCourseList { (crsList) in
                     school.CourseList = crsList
                     destinationVC?.userSchool = school
+                    destinationVC?.currentUserSchedule = self.scheduleToReturn
                     destinationVC?.tableView.reloadData()
+                    if let sched = self.scheduleToReturn {
+                        if let count = self.scheduleToReturn?.maxCourseCount {
+                            destinationVC?.errors.text = destinationVC?.periodLabelTextGenerator(schedule: sched, count: count)
+                        }
+                    }
                 }
             }
         }

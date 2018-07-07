@@ -13,12 +13,18 @@ class SchoolSelectorViewController: UIViewController , UIPickerViewDelegate , UI
     var currentSelection : School? = nil
     
     @IBOutlet var SchoolPicker: UIPickerView!
+    @IBOutlet var errorText: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.errorText.isHidden = true
         getSchoolList { (schoolList) in
             if let list = schoolList {
                 self.listOfSchools = list
+                if let list = schoolList {
+                    self.currentSelection = list[0]
+                    self.updateNewUser()
+                }
                 self.SchoolPicker.reloadAllComponents()
             } else {
                 print("ERROR")
@@ -66,6 +72,15 @@ class SchoolSelectorViewController: UIViewController , UIPickerViewDelegate , UI
         }
     }
     
+    @IBAction func continueAction(_ sender: Any) {
+        if self.currentSelection != nil {
+            self.performSegue(withIdentifier: "signUpSegueThree", sender: self)
+        } else {
+            self.errorText.text = "Please Select a School"
+            self.errorText.isHidden = false
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "signUpSegueThree" {
             let destinationVC = segue.destination as! ChooseClassesViewController
@@ -73,10 +88,20 @@ class SchoolSelectorViewController: UIViewController , UIPickerViewDelegate , UI
                 school.getCourseList { (crsList) in
                     school.CourseList = crsList
                     destinationVC.userSchool = school
+                    destinationVC.currentUserSchedule = Schedule(maxCourseCount: school.MaxStudentCourseLoad, courseLoad: [])
                 }
             }
         }
     }
     
+    func shake(cell: UIView) {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.07
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: cell.center.x - 10, y: cell.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: cell.center.x + 10, y: cell.center.y))
+        cell.layer.add(animation, forKey: "position")
+    }
     
 }

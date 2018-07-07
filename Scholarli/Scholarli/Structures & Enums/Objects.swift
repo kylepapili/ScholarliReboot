@@ -99,11 +99,7 @@ struct School {
                     for doc in documents {
                         let data = doc.data()
                         var tempCourse : Course? = nil
-                        do {
-                            print("IN DO")
-                            print(data["displayName"])
-                            dump(data)
-                            tempCourse = try Course(data: data)
+                        do {                            tempCourse = try Course(data: data)
                         } catch let err as firebaseInterpretationError {
                             print("Error in initializing course: \(err)")
                             return
@@ -439,9 +435,8 @@ struct Faculty {
 }
 
 struct Schedule {
-    let maxCourseCount : Int
-    let courseLoad : [Course]?
-    let id : String
+    let maxCourseCount : Int?
+    var courseLoad : [Course]?
     var data : [String : Any] {
         var tempDict : [String : Any] = ["maxCourseCount" : self.maxCourseCount]
         
@@ -458,19 +453,17 @@ struct Schedule {
     //Initializers
     
     //With DB Integration
-    init(ref: CollectionReference, maxCourseCount : Int , courseLoad : [Course]?) {
+    init(ref: CollectionReference, maxCourseCount : Int? , courseLoad : [Course]?) {
         self.maxCourseCount = maxCourseCount
         self.courseLoad = courseLoad
         let docRef : DocumentReference = ref.document()
-        self.id = docRef.documentID
         
         docRef.setData(self.data)
     }
     //Without DB Integration
-    init(maxCourseCount : Int , courseLoad : [Course]?, id : String) {
+    init(maxCourseCount : Int? , courseLoad : [Course]?) {
         self.maxCourseCount = maxCourseCount
         self.courseLoad = courseLoad
-        self.id = id
     }
 }
 

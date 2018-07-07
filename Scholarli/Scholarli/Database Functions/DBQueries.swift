@@ -9,6 +9,38 @@
 import Foundation
 import Firebase
 
+func verifyUsername(username: String, completion: @escaping (Bool?) -> Void) {
+    let userRef = db.collection("accounts")
+    userRef.document("/usernames").getDocument { (snapshot, err) in
+        if let err = err {
+            print("Error: \(err)")
+            completion(nil)
+            return
+        } else {
+            let data = snapshot?.data()
+            guard let listOfNames = data?.values else {
+                print("Error, unable to retrieve names")
+                completion(nil)
+                return
+            }
+            for name in listOfNames {
+                if let n = name as? String {
+                    if n == username {
+                        completion(false)
+                        return
+                    }
+                } else {
+                    print("Error, unable to unwrap names")
+                    completion(nil)
+                    return
+                }
+            }
+            completion(true)
+            return
+        }
+    }
+}
+
 func getSchoolList(completion: @escaping ([School]?) -> Void) {
     let schoolsRef = db.collection("schools")
     schoolsRef.getDocuments { (snapshot, err) in

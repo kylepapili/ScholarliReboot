@@ -13,6 +13,8 @@
 		5E0C588720D974E900E14D60 /* DevTestScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0C588620D974E900E14D60 /* DevTestScreenViewController.swift */; };
 		5E1F813E20E6EF4100133B37 /* CourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1F813D20E6EF4100133B37 /* CourseTableViewCell.swift */; };
 		5E45CA6720EBECDE008C8D2D /* FinalSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45CA6620EBECDE008C8D2D /* FinalSetupViewController.swift */; };
+		5E45CA6920F05F89008C8D2D /* UIFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45CA6820F05F89008C8D2D /* UIFunctions.swift */; };
+		5E45CA6B20F08596008C8D2D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45CA6A20F08596008C8D2D /* Functions.swift */; };
 		5E93315D20E3F24400BB1C58 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E93315C20E3F24400BB1C58 /* GoogleService-Info.plist */; };
 		5E93316020E4660800BB1C58 /* DBQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E93315F20E4660800BB1C58 /* DBQueries.swift */; };
 		5E988E6E20D8344C007CCD23 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E988E6D20D8344C007CCD23 /* UserInfoViewController.swift */; };
@@ -59,6 +61,8 @@
 		5E0C588620D974E900E14D60 /* DevTestScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevTestScreenViewController.swift; sourceTree = "<group>"; };
 		5E1F813D20E6EF4100133B37 /* CourseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewCell.swift; sourceTree = "<group>"; };
 		5E45CA6620EBECDE008C8D2D /* FinalSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalSetupViewController.swift; sourceTree = "<group>"; };
+		5E45CA6820F05F89008C8D2D /* UIFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFunctions.swift; sourceTree = "<group>"; };
+		5E45CA6A20F08596008C8D2D /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		5E93315C20E3F24400BB1C58 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		5E93315F20E4660800BB1C58 /* DBQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBQueries.swift; sourceTree = "<group>"; };
 		5E988E6D20D8344C007CCD23 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
@@ -213,6 +217,7 @@
 				5EFFFFD920D75EF300C94DF0 /* Objects.swift */,
 				5EFFFFDB20D75F2A00C94DF0 /* Types.swift */,
 				5E988E7120D84925007CCD23 /* Errors.swift */,
+				5E45CA6A20F08596008C8D2D /* Functions.swift */,
 			);
 			path = "Structures & Enums";
 			sourceTree = "<group>";
@@ -220,6 +225,7 @@
 		5EFFFFDF20D779B400C94DF0 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
+				5E45CA6820F05F89008C8D2D /* UIFunctions.swift */,
 				5E0C588520D974D600E14D60 /* Developer Testing */,
 				5EFFFFE020D779C600C94DF0 /* Setup and Intro */,
 			);
@@ -566,8 +572,10 @@
 				5E1F813E20E6EF4100133B37 /* CourseTableViewCell.swift in Sources */,
 				5EAC082420D9A4E500B4CDD7 /* AddClassViewController.swift in Sources */,
 				5EAC082620D9AB1700B4CDD7 /* ChooseClassesViewController.swift in Sources */,
+				5E45CA6B20F08596008C8D2D /* Functions.swift in Sources */,
 				5E988E7020D8436C007CCD23 /* SecurityViewController.swift in Sources */,
 				5E988E7220D84925007CCD23 /* Errors.swift in Sources */,
+				5E45CA6920F05F89008C8D2D /* UIFunctions.swift in Sources */,
 				5EFFFFDC20D75F2A00C94DF0 /* Types.swift in Sources */,
 				5EFFFFE220D779EB00C94DF0 /* WelcomePageViewController.swift in Sources */,
 				5EFFFFA820D75E7600C94DF0 /* AppDelegate.swift in Sources */,

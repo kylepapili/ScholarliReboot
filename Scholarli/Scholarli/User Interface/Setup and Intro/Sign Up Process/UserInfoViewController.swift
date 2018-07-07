@@ -21,6 +21,7 @@ class UserInfoViewController: UIViewController , UIPickerViewDelegate , UIPicker
     @IBOutlet var PhoneNumber: UITextField!
     @IBOutlet var AccountTypeButton: UIButton!
     @IBOutlet var AccountTypeSelector: UIPickerView!
+    @IBOutlet var error: UILabel!
     
     func updateAccountInfo() {
         newUserData["firstName"] = FirstName.text
@@ -32,6 +33,7 @@ class UserInfoViewController: UIViewController , UIPickerViewDelegate , UIPicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.error.isHidden = true
         AccountTypeSelector.isHidden = true
     }
     
@@ -41,6 +43,7 @@ class UserInfoViewController: UIViewController , UIPickerViewDelegate , UIPicker
     
     @IBAction func SelectAccountType(_ sender: Any) {
         AccountTypeSelector.isHidden = false
+        self.currentAccountType = .student
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -75,4 +78,65 @@ class UserInfoViewController: UIViewController , UIPickerViewDelegate , UIPicker
         }
         updateAccountInfo()
     }
+    
+    func verify(completion: @escaping (String) -> Void) {
+        updateAccountInfo()
+        var stringToReturn : String = ""
+        if self.Username.text == "" || self.Username.text == nil {
+            stringToReturn.append("Must specify a username. ")
+            completion(stringToReturn)
+            return
+        } else {
+            verifyUsername(username: self.Username.text!) { (result) in
+                if let finalResult = result {
+                    if !finalResult {
+                        //Ussername taken
+                        stringToReturn.append("Username is already taken. ")
+                    }
+                    if self.FirstName.text == "" || self.FirstName.text == nil {
+                        stringToReturn.append("Must specify a first name. ")
+                    }
+                    if self.LastName.text == "" || self.LastName.text == nil {
+                        stringToReturn.append("Must specify a last name. ")
+                    }
+                    if self.PhoneNumber.text == nil || self.PhoneNumber.text == "" {
+                        stringToReturn.append("Must provide a phone number. ")
+                    }
+                    if self.currentAccountType == nil {
+                        stringToReturn.append("Must select an account type. ")
+                    }
+                    completion(stringToReturn)
+                }
+            }
+        }
+        
+    }
+    
+    @IBAction func ContinueAction(_ sender: Any) {
+        verify { (errorMessage) in
+            print(errorMessage)
+            if !(errorMessage == "") {
+                self.error.text = errorMessage
+                self.error.isHidden = false
+                self.shake(cell: self.error)
+                return
+            }
+            self.performSegue(withIdentifier: "signUpSegueOne", sender: self)
+        }
+    }
+    
+    func shake(cell: UIView) {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.07
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: cell.center.x - 10, y: cell.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: cell.center.x + 10, y: cell.center.y))
+        cell.layer.add(animation, forKey: "position")
+    }
 }
+
+
+
+
+

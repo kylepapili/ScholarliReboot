@@ -28,14 +28,16 @@ class SecurityViewController: UIViewController {
         return UIStoryboard(name: "Main", bundle : nil).instantiateViewController(withIdentifier: viewController) as! UIPageViewController
     }
     
-    func checkForConfirmation() {
+    func checkForConfirmation() -> Bool {
         if(Password.text == ConfirmPassword.text) {
             ErrorLabel.text = ""
             ErrorLabel.isHidden = true
             updateAccountInfo()
+            return true
         } else {
             ErrorLabel.text = "Please Make Sure The Passwords Match"
             ErrorLabel.isHidden = false
+            return false
         }
     }
     
@@ -45,6 +47,23 @@ class SecurityViewController: UIViewController {
     
     @IBAction func ConfirmPasswordDoneEditing(_ sender: Any) {
         checkForConfirmation()
+    }
+    @IBAction func Continue(_ sender: Any) {
+        if checkForConfirmation() {
+            self.performSegue(withIdentifier: "signUpSegueTwo", sender: self)
+        } else {
+            shake(cell: self.ErrorLabel)
+            return
+        }
+    }
+    func shake(cell: UIView) {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.07
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: cell.center.x - 10, y: cell.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: cell.center.x + 10, y: cell.center.y))
+        cell.layer.add(animation, forKey: "position")
     }
     
 }
